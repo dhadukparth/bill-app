@@ -1,54 +1,34 @@
-import React from "react";
-import {
-    StyleProp,
-    StyleSheet,
-    TouchableOpacity,
-    ViewStyle,
-} from "react-native";
+import { cn } from "@/utils";
+import React, { forwardRef } from "react";
+import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import Loader from "../Loader";
 
-interface ButtonProps {
-    onPress?: () => void;
-    buttonStyle?: StyleProp<ViewStyle>;
-    disabled?: boolean;
-    children: React.ReactNode;
+export interface ButtonProps extends TouchableOpacityProps {
     isLoading?: boolean;
+    children: string;
 }
 
-const Button: React.FC<ButtonProps> = ({
-    onPress,
-    buttonStyle,
-    disabled = false,
-    children,
-    isLoading = false,
-}) => {
-    return (
-        <TouchableOpacity
-            style={[
-                styles.button,
-                buttonStyle,
-                disabled && styles.disabledButton,
-            ]}
-            onPress={onPress}
-            disabled={disabled}
-        >
-            {isLoading ? <Loader size="small" /> : children}
-        </TouchableOpacity>
-    );
-};
+const Button = forwardRef<any, ButtonProps>(
+    ({ children, isLoading, className, ...props }, ref) => {
+        return (
+            <TouchableOpacity
+                ref={ref}
+                className={cn(
+                    "flex items-center justify-center rounded-md text-sm bg-blue-500 text-white font-medium transition-colors disabled:opacity-50 px-4 py-3",
+                    { className }
+                )}
+                {...props}
+            >
+                {isLoading ? (
+                    <Loader size="small" />
+                ) : (
+                    <Text className="text-white font-semibold text-lg font-inter-semibold">
+                        {children}
+                    </Text>
+                )}
+            </TouchableOpacity>
+        );
+    }
+);
 
 export default React.memo(Button);
-
-const styles = StyleSheet.create({
-    button: {
-        backgroundColor: "#007BFF",
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        alignItems: "center",
-        width: "100%",
-    },
-    disabledButton: {
-        backgroundColor: "#cccccc",
-    },
-});
