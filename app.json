@@ -32,6 +32,13 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow this app to access your photos.",
+          "cameraPermission": "Allow this app to use the camera."
+        }
       ]
     ],
     "experiments": {

@@ -38,6 +38,16 @@ const StackLayout = () => {
         name="(setting)/helpcenter"
         options={{ title: 'Help Center', headerShown: false }}
       />
+
+      {/* customer screen */}
+      <Stack.Screen
+        name="(customer)/new-customer"
+        options={{ title: 'New Customer', headerShown: false }}
+      />
+      <Stack.Screen
+        name="(customer)/edit-customer"
+        options={{ title: 'Edit Customer', headerShown: false }}
+      />
     </Stack>
   );
 };

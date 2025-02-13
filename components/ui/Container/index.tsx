@@ -14,7 +14,7 @@ const Container = React.forwardRef<View, ContainerProps>(
         <CStatusBar />
         <View
           ref={ref}
-          className={cn('px-4 pt-10 h-full flex-1 bg-whit dark:bg-gray-950', className)}
+          className={cn('px-4 pt-10 h-full flex-1 bg-white dark:bg-gray-950', className)}
           {...props}
         >
           {children}

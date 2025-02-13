@@ -33,7 +33,7 @@ const TextareaBox = React.forwardRef<TextInput, TextareaBoxProps>(
             numberOfLines={2}
             textAlignVertical="top"
             className={cn(
-              'bg-gray-800 h-32 py-3 px-4 text-white dark:placeholder:text-gray-300 text-base font-inter-regular font-normal rounded-lg border border-white',
+              'bg-gray-100 dark:bg-gray-800 h-32 py-3 px-4 text-white placeholder:text-gray-800 dark:placeholder:text-gray-300 text-base font-inter-regular font-normal rounded-lg border border-white',
               {
                 'pl-12': icon && iconDirection === 'left',
                 'pr-12': icon && iconDirection === 'right',

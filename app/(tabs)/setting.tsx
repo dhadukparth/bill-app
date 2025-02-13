@@ -1,5 +1,6 @@
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
+import { cn } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
 import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';
@@ -99,8 +100,8 @@ const Setting = () => {
   ];
 
   return (
-    <Container>
-      <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Container>
         <View className="mt-4">
           <View>
             <Title size="3xl" fonts="inter-bold">
@@ -130,7 +131,10 @@ const Setting = () => {
           </Link>
           <View className="mb-6">
             {settingMenuList.map((item, index) => (
-              <View key={index} className="bg-gray-800 mb-6 rounded-md">
+              <View
+                key={index}
+                className="bg-white dark:bg-gray-800 mb-6 rounded-md border border-gray-200"
+              >
                 <Title fonts="inter-semibold" className="p-4">
                   {item.sectionTitle}
                 </Title>
@@ -138,7 +142,12 @@ const Setting = () => {
                   {item.sectionMenus.map((subMenu, subMenuIndex) => (
                     <Pressable
                       key={subMenuIndex}
-                      className="flex flex-row justify-between items-center py-3 border-b border-b-gray-950 px-4"
+                      className={cn(
+                        'flex flex-row justify-between items-center py-3 px-4 border-b border-b-gray-200 dark:border-b-gray-950',
+                        {
+                          'border-b-0': subMenuIndex === item.sectionMenus.length - 1,
+                        }
+                      )}
                       onPress={() =>
                         router.push({
                           pathname: subMenu.link,
@@ -146,7 +155,7 @@ const Setting = () => {
                       }
                     >
                       <View className="flex flex-row justify-start items-center gap-3">
-                        <View className="p-1.5 bg-green-300/20 rounded-full">{subMenu.icon}</View>
+                        <View className="p-2 bg-green-300/50 rounded-full">{subMenu.icon}</View>
                         <Title fonts="poppins-medium">{subMenu.title}</Title>
                       </View>
                       <View>
@@ -163,8 +172,8 @@ const Setting = () => {
             ))}
           </View>
         </View>
-      </ScrollView>
-    </Container>
+      </Container>
+    </ScrollView>
   );
 };
 

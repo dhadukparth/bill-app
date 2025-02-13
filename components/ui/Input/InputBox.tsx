@@ -6,10 +6,24 @@ export interface InputBoxProps extends TextInputProps {
   label?: string;
   icon?: React.ReactNode;
   iconDirection?: 'left' | 'right';
+  extraIcon?: React.ReactNode;
+  extraIconDirection?: 'left' | 'right';
 }
 
 const InputBox = React.forwardRef<TextInput, InputBoxProps>(
-  ({ label, icon, iconDirection = 'left', className, keyboardType = 'default', ...props }, ref) => {
+  (
+    {
+      label,
+      icon,
+      iconDirection = 'left',
+      className,
+      keyboardType = 'default',
+      extraIcon,
+      extraIconDirection = 'right',
+      ...props
+    },
+    ref
+  ) => {
     return (
       <View className="mb-2">
         {label && (
@@ -22,7 +36,7 @@ const InputBox = React.forwardRef<TextInput, InputBoxProps>(
         <View className="relative">
           {icon && iconDirection === 'left' ? (
             <View className="absolute top-1/2 left-6 -translate-y-1/2 -translate-x-1/2 z-10">
-              {icon}
+              {extraIcon && extraIconDirection === 'left' ? extraIcon : icon}
             </View>
           ) : null}
           <TextInput
@@ -30,18 +44,22 @@ const InputBox = React.forwardRef<TextInput, InputBoxProps>(
             keyboardType={keyboardType}
             autoComplete="off"
             className={cn(
-              'bg-gray-800 max-h-12 py-3 px-4 text-white dark:placeholder:text-gray-300 text-base font-inter-regular font-normal rounded-lg border border-white',
+              'bg-gray-100 dark:bg-gray-800 max-h-12 py-3 px-4 text-black dark:text-white placeholder:text-gray-800 dark:placeholder:text-gray-300 text-base font-inter-regular font-normal rounded-lg border border-white',
               {
-                'pl-12': icon && iconDirection === 'left',
-                'pr-12': icon && iconDirection === 'right',
+                'pl-12':
+                  (icon && iconDirection === 'left') ||
+                  (extraIcon && extraIconDirection === 'left'),
+                'pr-12':
+                  (icon && iconDirection === 'right') ||
+                  (extraIcon && extraIconDirection === 'right'),
               },
               className
             )}
             {...props}
           />
-          {icon && iconDirection === 'right' ? (
+          {(icon && iconDirection === 'right') || (extraIcon && extraIconDirection === 'right') ? (
             <View className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-1/2 z-10">
-              {icon}
+              {extraIcon && extraIconDirection === 'right' ? extraIcon : icon}
             </View>
           ) : null}
         </View>

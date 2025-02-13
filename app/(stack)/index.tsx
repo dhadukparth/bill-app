@@ -29,39 +29,43 @@ const WelcomeScreen = () => {
 
   return (
     <Container>
-      <Slider dotColor="#E5E7EB" activeDotColor="#3B82F6" loop autoplay>
-        {welcomeData.map((item, index) => (
-          <View key={index}>
-            <View className="max-h-96">
-              <Image source={item.image} alt="not found" className="w-full h-full rounded-lg" />
-            </View>
-            <View className="mt-10">
-              <Text className="text-3xl text-gray-900 dark:text-white font-medium font-inter-medium">
-                {item.title}
-              </Text>
-              <Text className="text-base text-gray-500 mt-2 dark:text-gray-200 font-poppins-regular font-normal">
-                {item.description}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </Slider>
-      <View className="px-6 mt-6">
-        {/* Get Started Button */}
-        <Button
-          className="mt-6 bg-blue-600 py-3 rounded-lg items-center"
-          onPress={() => router.push('/login')}
-        >
-          Get Started
-        </Button>
+      <View className="py-10">
+        <View className="h-4/5">
+          <Slider dotColor="#E5E7EB" activeDotColor="#3B82F6" loop autoplay>
+            {welcomeData.map((item, index) => (
+              <View key={index}>
+                <View className="max-h-96">
+                  <Image source={item.image} alt="not found" className="w-full h-full rounded-lg" />
+                </View>
+                <View className="mt-10">
+                  <Text className="text-3xl text-gray-900 dark:text-white font-medium font-inter-medium">
+                    {item.title}
+                  </Text>
+                  <Text className="text-base text-gray-500 mt-2 dark:text-gray-200 font-poppins-regular font-normal">
+                    {item.description}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </Slider>
+        </View>
+        <View className="px-6 my-6 mb-10">
+          {/* Get Started Button */}
+          <Button
+            className="mt-6 bg-blue-600 py-3 rounded-lg items-center"
+            onPress={() => router.push('/(tabs)')}
+          >
+            Get Started
+          </Button>
 
-        {/* Sign In Link */}
-        <Text className="text-center text-gray-500 dark:text-white mt-4 font-poppins-regular">
-          Already have an account?{' '}
-          <Link href="/(stack)/(auth)/login">
-            <Text className="text-blue-600 font-semibold font-inter-semibold">Sign In</Text>
-          </Link>
-        </Text>
+          {/* Sign In Link */}
+          <Text className="text-center text-gray-500 dark:text-white mt-4 font-poppins-regular">
+            Already have an account?{' '}
+            <Link href="/(stack)/(auth)/login">
+              <Text className="text-blue-600 font-semibold font-inter-semibold">Sign In</Text>
+            </Link>
+          </Text>
+        </View>
       </View>
     </Container>
   );

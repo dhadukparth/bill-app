@@ -1,6 +1,8 @@
+import { getData } from '@/lib/localstorage';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { colorScheme } from 'nativewind';
 import React from 'react';
 import '../global.css';
 
@@ -19,9 +21,22 @@ const RootLayout = () => {
   });
 
   React.useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
+    const hideSplashScreen = async () => {
+      if (loaded || error) {
+        try {
+          const getTheme = await getData('theme'); // Wait for AsyncStorage to resolve
+          console.log(getTheme);
+          if (getTheme) {
+            colorScheme.set(getTheme); // Assuming `colorScheme.set()` is a valid function
+          }
+        } catch (err) {
+          console.error('Error loading theme:', err);
+        }
+        await SplashScreen.hideAsync(); // Ensure splash screen hides after logic
+      }
+    };
+
+    hideSplashScreen();
   }, [loaded, error]);
 
   if (!loaded && !error) {

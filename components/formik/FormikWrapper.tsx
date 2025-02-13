@@ -11,13 +11,15 @@ interface FormikWrapperProps<T> extends ViewProps {
   onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void;
   onCurrentValues?: (values: T) => void;
   customValidate?: (values: T) => Partial<Record<keyof T, string>>;
-  submitBtn: {
-    title: string;
-    loading: boolean;
-    className?: string;
-    icon?: React.ReactNode;
-    iconDirection?: 'left' | 'right';
-  };
+  submitBtn:
+    | {
+        title: string;
+        loading: boolean;
+        className?: string;
+        icon?: React.ReactNode;
+        iconDirection?: 'left' | 'right';
+      }
+    | false;
 }
 
 const FormikWrapper: React.FC<FormikWrapperProps<any>> = ({
@@ -50,15 +52,17 @@ const FormikWrapper: React.FC<FormikWrapperProps<any>> = ({
             <View style={style} {...props}>
               {children}
             </View>
-            <Button
-              onPress={() => handleSubmit()}
-              isLoading={submitBtn.loading}
-              className={submitBtn?.className}
-              icon={submitBtn?.icon}
-              iconDirection={submitBtn?.iconDirection}
-            >
-              {submitBtn.title}
-            </Button>
+            {submitBtn !== false ? (
+              <Button
+                onPress={() => handleSubmit()}
+                isLoading={submitBtn.loading}
+                className={submitBtn?.className}
+                icon={submitBtn?.icon}
+                iconDirection={submitBtn?.iconDirection}
+              >
+                {submitBtn.title}
+              </Button>
+            ) : null}
           </>
         );
       }}
