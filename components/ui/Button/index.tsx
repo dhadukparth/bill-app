@@ -1,4 +1,5 @@
 import { cn } from '@/utils';
+import globalStyle from '@/utils/globalStyle';
 import { cva, VariantProps } from 'class-variance-authority';
 import React, { forwardRef } from 'react';
 import { Pressable, PressableProps, Text, View } from 'react-native';
@@ -14,10 +15,10 @@ const buttonVariants = cva(
         large: 'text-lg font-semibold',
       },
       varient: {
-        default: 'bg-blue-500 text-white',
-        outline:
-          'bg-transparent border dark:border-white border-gray-950 text-black dark:text-white',
-        danger: 'bg-red-500 border dark:border-red-500 border-red-500 text-black dark:text-white',
+        default: 'bg-blue-500',
+        outline: 'bg-transparent border dark:border-white border-gray-950',
+        danger: 'bg-red-500 border dark:border-red-500 border-red-500',
+        'danger-outline': 'bg-transparent border dark:border-red-500 border-red-600',
       },
     },
     defaultVariants: {
@@ -31,6 +32,7 @@ export interface ButtonProps extends PressableProps, VariantProps<typeof buttonV
   isLoading?: boolean;
   children: string;
   icon?: React.ReactNode;
+  loaderColor?: string;
   iconDirection?: 'left' | 'right';
 }
 
@@ -42,6 +44,7 @@ const Button = forwardRef<any, ButtonProps>(
       className,
       size,
       icon,
+      loaderColor = globalStyle.colors.white,
       iconDirection = 'left',
       varient = 'default',
       ...props
@@ -51,11 +54,19 @@ const Button = forwardRef<any, ButtonProps>(
     return (
       <Pressable ref={ref} className={cn(buttonVariants({ size, varient, className }))} {...props}>
         {isLoading ? (
-          <Loader size="small" />
+          <Loader size="small" color={loaderColor} />
         ) : (
           <View className="flex flex-row justify-center items-center gap-2">
             {icon && iconDirection === 'left' ? icon : null}
-            <Text className="text-white font-semibold text-lg font-inter-semibold">{children}</Text>
+            <Text
+              className={cn('font-semibold text-lg font-inter-semibold', {
+                'text-black dark:text-white': varient === 'outline',
+                'text-red-500': varient === 'danger-outline',
+                'text-white ': ['outline', 'danger', 'default'].includes(varient ?? ''),
+              })}
+            >
+              {children}
+            </Text>
             {icon && iconDirection === 'right' ? icon : null}
           </View>
         )}

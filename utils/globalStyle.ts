@@ -2,11 +2,10 @@ import { colorScheme } from 'nativewind';
 
 export const getCurrentTheme = colorScheme.get();
 
-// console.log(getCurrentTheme)
+console.log(getCurrentTheme);
 
-const WHITE = "#FFFFFF"
-const BLACK = "#000000"
-
+const WHITE = '#FFFFFF';
+const BLACK = '#000000';
 
 export default {
   icon: {
@@ -15,6 +14,6 @@ export default {
   },
   colors: {
     white: WHITE,
-    black: BLACK
-  }
+    black: BLACK,
+  },
 };

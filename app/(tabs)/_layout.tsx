@@ -1,4 +1,5 @@
 import globalStyle, { getCurrentTheme } from '@/utils/globalStyle';
+import { AntDesign } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -27,6 +28,20 @@ const TabsLayout = () => {
           tabBarIcon: () => (
             <FontAwesome
               name="home"
+              size={globalStyle.icon.size}
+              color={getCurrentTheme === 'light' ? '#000000' : '#FFFFFF'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="bills"
+        options={{
+          headerShown: false,
+          title: 'Bills',
+          tabBarIcon: () => (
+            <AntDesign
+              name="copy1"
               size={globalStyle.icon.size}
               color={getCurrentTheme === 'light' ? '#000000' : '#FFFFFF'}
             />

@@ -133,7 +133,7 @@ const Setting = () => {
             {settingMenuList.map((item, index) => (
               <View
                 key={index}
-                className="bg-white dark:bg-gray-800 mb-6 rounded-md border border-gray-200"
+                className="bg-white dark:bg-gray-800 mb-6 rounded-md border border-gray-200 dark:border-gray-600"
               >
                 <Title fonts="inter-semibold" className="p-4">
                   {item.sectionTitle}
@@ -143,7 +143,7 @@ const Setting = () => {
                     <Pressable
                       key={subMenuIndex}
                       className={cn(
-                        'flex flex-row justify-between items-center py-3 px-4 border-b border-b-gray-200 dark:border-b-gray-950',
+                        'flex flex-row justify-between items-center py-3 px-4 border-b border-b-gray-200 dark:border-b-gray-600',
                         {
                           'border-b-0': subMenuIndex === item.sectionMenus.length - 1,
                         }

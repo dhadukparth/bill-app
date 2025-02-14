@@ -10,7 +10,7 @@
     "MD041": false
   },
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.words": ["errmsg"],
   "[typescriptreact]": {

@@ -29,6 +29,7 @@ const ProfileForm = () => {
     });
 
     if (!result.canceled) {
+      console.log(result);
       setChooseImageUrl(result.assets[0].uri);
     }
   };
@@ -75,6 +76,8 @@ const ProfileForm = () => {
         <FormikInput
           name="email"
           placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
           icon={
             <Fontisto name="email" size={globalStyle.icon.size} color={globalStyle.icon.color} />
           }

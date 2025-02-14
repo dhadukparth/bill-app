@@ -1,13 +1,42 @@
 import FormikWrapper from '@/components/formik/FormikWrapper';
 import ProfileForm from '@/components/forms/Profile';
-import Button from '@/components/ui/Button';
 import BackWithTitle from '@/components/ui/Button/BackWithTitle';
 import Container from '@/components/ui/Container';
+import { createCustomer } from '@/lib/filesystem/customer';
 import { router } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
 const NewCustomerScreen = () => {
+  const initialValues = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    description: '',
+    profile: null,
+  };
+
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOnSubmit = async (value: typeof initialValues, { resetForm }: any) => {
+    const data = {
+      firstName: value.firstName,
+      lastName: value.lastName,
+      email: value.email,
+      description: value.description,
+    };
+
+    setLoading(true);
+    const result = await createCustomer(data);
+    if (result) {
+      router.push('/customer');
+      resetForm();
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
   return (
     <Container>
       <View className="pt-10 p-4">
@@ -15,19 +44,15 @@ const NewCustomerScreen = () => {
 
         <View>
           <FormikWrapper
-            initialValues={{
-              firstName: '',
-              lastName: '',
-              email: '',
-              description: '',
-              profile: null,
-            }}
+            initialValues={initialValues}
             validationSchema={null}
-            onSubmit={() => {}}
-            submitBtn={false}
+            onSubmit={handleOnSubmit}
+            submitBtn={{
+              loading: loading,
+              title: 'Save',
+            }}
           >
             <ProfileForm />
-            <Button isLoading={false}>Save</Button>
           </FormikWrapper>
         </View>
       </View>
