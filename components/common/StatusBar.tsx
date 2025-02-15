@@ -1,16 +1,13 @@
-import globalStyle from '@/utils/globalStyle';
+import { useGlobalStore } from '@/store/global';
 import { StatusBar } from 'expo-status-bar';
-import { colorScheme } from 'nativewind';
+
 import React from 'react';
 
 const CStatusBar = () => {
-  const getTheme = colorScheme.get();
+  const getTheme = useGlobalStore((state) => state.global.theme);
 
   return (
-    <StatusBar
-      style={getTheme === 'dark' ? 'light' : 'dark'}
-      backgroundColor={getTheme === 'light' ? globalStyle.colors.white : globalStyle.colors.black}
-    />
+    <StatusBar style={getTheme === 'dark' ? 'light' : getTheme === 'light' ? 'dark' : 'auto'} />
   );
 };
 

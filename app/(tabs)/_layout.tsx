@@ -1,4 +1,7 @@
-import globalStyle, { getCurrentTheme } from '@/utils/globalStyle';
+import router from '@/router';
+import { useGlobalStore } from '@/store/global';
+import { conditionCheck } from '@/utils';
+import globalStyle from '@/utils/globalStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -7,72 +10,77 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 const TabsLayout = () => {
+  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+
+  const iconSize = globalStyle.icon.size + 5;
+  const iconColor = conditionCheck(
+    getCurrentTheme === 'light',
+    globalStyle.colors.black,
+    globalStyle.colors.white
+  );
+
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
           backgroundColor: getCurrentTheme === 'light' ? '#FFFFFF' : '#000000',
+          height: 50,
+        },
+        tabBarItemStyle: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
         },
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '600',
           fontFamily: 'Inter-SemiBold',
+          display: 'none',
+        },
+        tabBarIconStyle: {
+          width: '100%',
+          height: '100%',
         },
       }}
     >
       <Tabs.Screen
-        name="index"
+        name={router.tabs.home}
         options={{
           headerShown: false,
           title: 'Home',
-          tabBarIcon: () => (
-            <FontAwesome
-              name="home"
-              size={globalStyle.icon.size}
-              color={getCurrentTheme === 'light' ? '#000000' : '#FFFFFF'}
-            />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome name="home" size={iconSize} color={focused ? '#3b82f6' : iconColor} />
           ),
         }}
       />
       <Tabs.Screen
-        name="bills"
+        name={router.tabs.bills}
         options={{
           headerShown: false,
           title: 'Bills',
-          tabBarIcon: () => (
-            <AntDesign
-              name="copy1"
-              size={globalStyle.icon.size}
-              color={getCurrentTheme === 'light' ? '#000000' : '#FFFFFF'}
-            />
+          tabBarIcon: ({ focused }) => (
+            <AntDesign name="copy1" size={iconSize} color={focused ? '#3b82f6' : iconColor} />
           ),
         }}
       />
       <Tabs.Screen
-        name="customer"
+        name={router.tabs.customer}
         options={{
           headerShown: false,
           title: 'Customer',
-          tabBarIcon: () => (
-            <FontAwesome5
-              name="users"
-              size={globalStyle.icon.size}
-              color={getCurrentTheme === 'light' ? '#000000' : '#FFFFFF'}
-            />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome5 name="users" size={iconSize} color={focused ? '#3b82f6' : iconColor} />
           ),
         }}
       />
       <Tabs.Screen
-        name="setting"
+        name={router.tabs.setting}
         options={{
           headerShown: false,
           title: 'Settings',
-          tabBarIcon: (focused) => (
-            <Feather
-              name="settings"
-              size={globalStyle.icon.size}
-              color={getCurrentTheme === 'light' ? '#000000' : '#FFFFFF'}
-            />
+          tabBarIcon: ({ focused }) => (
+            <Feather name="settings" size={iconSize} color={focused ? '#3b82f6' : iconColor} />
           ),
         }}
       />

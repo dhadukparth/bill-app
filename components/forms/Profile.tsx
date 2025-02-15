@@ -1,3 +1,4 @@
+import { useGlobalStore } from '@/store/global';
 import globalStyle from '@/utils/globalStyle';
 import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';
@@ -9,6 +10,10 @@ import FormikInput from '../formik/FormikInput';
 import FormikTextarea from '../formik/FormikTextarea';
 
 const ProfileForm = () => {
+  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+  const iconColor =
+    getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
+
   const [chooseImageUrl, setChooseImageUrl] = React.useState<string | null>(null);
 
   const pickImage = async () => {
@@ -57,18 +62,14 @@ const ProfileForm = () => {
           <FormikInput
             name="firstName"
             placeholder="FirstName"
-            icon={
-              <Feather name="user" size={globalStyle.icon.size} color={globalStyle.icon.color} />
-            }
+            icon={<Feather name="user" size={globalStyle.icon.size} color={iconColor} />}
           />
         </View>
         <View className="mb-3 w-[48%]">
           <FormikInput
             name="lastName"
             placeholder="LastName"
-            icon={
-              <Feather name="user" size={globalStyle.icon.size} color={globalStyle.icon.color} />
-            }
+            icon={<Feather name="user" size={globalStyle.icon.size} color={iconColor} />}
           />
         </View>
       </View>
@@ -78,9 +79,7 @@ const ProfileForm = () => {
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
-          icon={
-            <Fontisto name="email" size={globalStyle.icon.size} color={globalStyle.icon.color} />
-          }
+          icon={<Fontisto name="email" size={globalStyle.icon.size} color={iconColor} />}
         />
       </View>
       <View className="mb-3">

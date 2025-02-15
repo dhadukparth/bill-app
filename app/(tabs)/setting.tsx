@@ -1,5 +1,6 @@
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
+import { useGlobalStore } from '@/store/global';
 import { cn } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -7,7 +8,7 @@ import Feather from '@expo/vector-icons/Feather';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Link, router } from 'expo-router';
+import { Link, router, useFocusEffect } from 'expo-router';
 import React from 'react';
 import { Image, Pressable, ScrollView, View } from 'react-native';
 
@@ -21,6 +22,16 @@ type SettingMenuListType = {
 };
 
 const Setting = () => {
+  const scrollViewRef = React.useRef<ScrollView>(null);
+
+  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+  const iconColor =
+    getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
+
+  useFocusEffect(() => {
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+  });
+
   const settingMenuList: SettingMenuListType[] = [
     {
       sectionTitle: 'Account & Security',
@@ -28,12 +39,12 @@ const Setting = () => {
         {
           title: 'Profile',
           link: '/profile',
-          icon: <Feather name="user" size={globalStyle.icon.size} color={globalStyle.icon.color} />,
+          icon: <Feather name="user" size={globalStyle.icon.size} color={iconColor} />,
         },
         {
           title: 'Change Password',
           link: '/changepassword',
-          icon: <Feather name="lock" size={globalStyle.icon.size} color={globalStyle.icon.color} />,
+          icon: <Feather name="lock" size={globalStyle.icon.size} color={iconColor} />,
         },
       ],
     },
@@ -43,14 +54,12 @@ const Setting = () => {
         {
           title: 'Language',
           link: '/language',
-          icon: (
-            <Ionicons name="language" size={globalStyle.icon.size} color={globalStyle.icon.color} />
-          ),
+          icon: <Ionicons name="language" size={globalStyle.icon.size} color={iconColor} />,
         },
         {
           title: 'Dark Mode',
           link: '/theme',
-          icon: <Feather name="moon" size={globalStyle.icon.size} color={globalStyle.icon.color} />,
+          icon: <Feather name="moon" size={globalStyle.icon.size} color={iconColor} />,
         },
       ],
     },
@@ -60,23 +69,13 @@ const Setting = () => {
         {
           title: 'Terms & Conditions',
           link: '/terms-condition',
-          icon: (
-            <Ionicons
-              name="document-text"
-              size={globalStyle.icon.size}
-              color={globalStyle.icon.color}
-            />
-          ),
+          icon: <Ionicons name="document-text" size={globalStyle.icon.size} color={iconColor} />,
         },
         {
           title: 'Help Center',
           link: '/helpcenter',
           icon: (
-            <FontAwesome6
-              name="question-circle"
-              size={globalStyle.icon.size}
-              color={globalStyle.icon.color}
-            />
+            <FontAwesome6 name="question-circle" size={globalStyle.icon.size} color={iconColor} />
           ),
         },
       ],
@@ -86,13 +85,7 @@ const Setting = () => {
       sectionMenus: [
         {
           title: 'Logout',
-          icon: (
-            <MaterialIcons
-              name="logout"
-              size={globalStyle.icon.size}
-              color={globalStyle.icon.color}
-            />
-          ),
+          icon: <MaterialIcons name="logout" size={globalStyle.icon.size} color={iconColor} />,
           link: '/',
         },
       ],
@@ -100,15 +93,18 @@ const Setting = () => {
   ];
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      ref={scrollViewRef}
+      className="bg-white dark:bg-gray-950"
+      showsVerticalScrollIndicator={false}
+    >
       <Container>
-        <View className="mt-4">
-          <View>
-            <Title size="3xl" fonts="inter-bold">
-              Settings
-            </Title>
-          </View>
-          <Link href="/profile" className="my-8">
+        <View className="py-4">
+          <Title size="3xl" fonts="inter-bold">
+            Settings
+          </Title>
+
+          <Link href="/profile" className="my-6">
             <View className="flex flex-row justify-start items-center gap-4">
               <View className="size-20">
                 <Image
@@ -129,11 +125,16 @@ const Setting = () => {
               </View>
             </View>
           </Link>
-          <View className="mb-6">
+          <View>
             {settingMenuList.map((item, index) => (
               <View
                 key={index}
-                className="bg-white dark:bg-gray-800 mb-6 rounded-md border border-gray-200 dark:border-gray-600"
+                className={cn(
+                  'bg-white dark:bg-gray-800 mb-6 rounded-md border border-gray-200 dark:border-gray-600',
+                  {
+                    'mb-4': settingMenuList.length === index + 1,
+                  }
+                )}
               >
                 <Title fonts="inter-semibold" className="p-4">
                   {item.sectionTitle}
@@ -162,7 +163,7 @@ const Setting = () => {
                         <Entypo
                           name="chevron-small-right"
                           size={globalStyle.icon.size}
-                          color={globalStyle.icon.color}
+                          color={iconColor}
                         />
                       </View>
                     </Pressable>

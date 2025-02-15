@@ -4,6 +4,7 @@ import { Title } from '@/components/ui/HeadText';
 import InputBox from '@/components/ui/Input/InputBox';
 import Loader from '@/components/ui/Loader';
 import { readCustomers } from '@/lib/filesystem/customer';
+import { useGlobalStore } from '@/store/global';
 import globalStyle from '@/utils/globalStyle';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
@@ -12,6 +13,10 @@ import React from 'react';
 import { Image, Pressable, ScrollView, View } from 'react-native';
 
 const Customer = () => {
+  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+  const iconColor =
+    getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
+
   const [searchText, setSearchText] = React.useState('');
   const [customerList, setCustomerList] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -52,11 +57,11 @@ const Customer = () => {
   }, []);
 
   return (
-    <Container className="p-0">
-      <View className="pt-10">
+    <Container className="px-0">
+      <View className="py-4">
         <View className="p-4">
           <View className="flex flex-row justify-between items-center gap-4">
-            <Title size="2xl" fonts="inter-semibold">
+            <Title size="3xl" fonts="inter-bold">
               Customers
             </Title>
             <View className="flex flex-row justify-end items-center gap-4">
@@ -78,19 +83,13 @@ const Customer = () => {
               placeholder="Search customer"
               value={searchText}
               onChangeText={handleOnchange}
-              icon={
-                <Feather
-                  name="search"
-                  size={globalStyle.icon.size}
-                  color={globalStyle.icon.color}
-                />
-              }
+              icon={<Feather name="search" size={globalStyle.icon.size} color={iconColor} />}
               extraIcon={
                 searchText.length ? (
                   <AntDesign
                     name="close"
                     size={globalStyle.icon.size}
-                    color={globalStyle.icon.color}
+                    color={iconColor}
                     onPress={() => setSearchText('')}
                   />
                 ) : null
@@ -100,7 +99,7 @@ const Customer = () => {
         </View>
         {loading ? (
           <View className="my-4">
-            <Loader />
+            <Loader color={iconColor} />
           </View>
         ) : (
           <View>
@@ -115,7 +114,7 @@ const Customer = () => {
                         params: item,
                       }}
                     >
-                      <View className="flex flex-row  items-center p-4 border-b border-gray-700">
+                      <View className="flex flex-row  items-center p-4 border-b border-b-gray-200 dark:border-b-gray-800">
                         <View className="flex flex-row justify-start items-center gap-4">
                           <View className="size-14 bg-gray-700 border border-white rounded-full">
                             <Image

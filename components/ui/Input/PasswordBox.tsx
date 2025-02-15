@@ -1,3 +1,4 @@
+import { useGlobalStore } from '@/store/global';
 import { cn } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
 import Feather from '@expo/vector-icons/Feather';
@@ -12,6 +13,11 @@ export interface PasswordInputBoxProps extends TextInputProps {
 const PasswordBox = React.forwardRef<TextInput, PasswordInputBoxProps>(
   ({ label, icon, className, keyboardType = 'default', ...props }, ref) => {
     const [passwordHide, setPasswordHide] = React.useState(true);
+
+    const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+
+    const iconColor =
+      getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
 
     return (
       <View className="mb-2">
@@ -47,7 +53,7 @@ const PasswordBox = React.forwardRef<TextInput, PasswordInputBoxProps>(
               <Feather
                 name={passwordHide ? 'eye' : 'eye-off'}
                 size={globalStyle.icon.size}
-                color={globalStyle.colors.white}
+                color={iconColor}
               />
             </TouchableOpacity>
           </View>

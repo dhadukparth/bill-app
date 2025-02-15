@@ -83,7 +83,7 @@ const RecentTransaction = ({ maxLength }: { maxLength?: number }) => {
       {recentTransactionsList.slice(0, maxLength).map((item, index) => (
         <View
           key={index}
-          className="flex flex-row justify-between items-center px-4 py-6 border border-gray-800 dark:border-gray-500 rounded-xl my-4"
+          className="flex flex-row justify-between items-center px-4 py-6 border border-gray-200 dark:border-gray-500 rounded-xl my-2"
         >
           <View className="flex flex-row justify-start items-center gap-3">
             <View className="size-14 rounded-full">

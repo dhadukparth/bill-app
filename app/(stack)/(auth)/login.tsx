@@ -4,6 +4,7 @@ import FormikPassword from '@/components/formik/FormikPassword';
 import FormikWrapper from '@/components/formik/FormikWrapper';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
+import { useGlobalStore } from '@/store/global';
 import globalStyle from '@/utils/globalStyle';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
@@ -15,6 +16,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 const LoginScreen = () => {
+  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+
+  const iconColor =
+    getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
   return (
     <Container>
       <View className="pt-6">
@@ -35,7 +40,7 @@ const LoginScreen = () => {
               <MaterialIcons
                 name="login"
                 size={globalStyle.icon.size}
-                color={globalStyle.icon.color}
+                color={globalStyle.colors.white}
               />
             ),
           }}
@@ -45,17 +50,13 @@ const LoginScreen = () => {
             label="Email"
             keyboardType="email-address"
             placeholder="Email"
-            icon={
-              <Fontisto name="email" size={globalStyle.icon.size} color={globalStyle.icon.color} />
-            }
+            icon={<Fontisto name="email" size={globalStyle.icon.size} color={iconColor} />}
           />
           <FormikPassword
             name="password"
             label="Password"
             placeholder="Password"
-            icon={
-              <Feather name="lock" size={globalStyle.icon.size} color={globalStyle.icon.color} />
-            }
+            icon={<Feather name="lock" size={globalStyle.icon.size} color={iconColor} />}
           />
           <View className="flex flex-row justify-between items-center mt-2">
             <FormikCheckbox
@@ -79,26 +80,14 @@ const LoginScreen = () => {
           <Button
             className="w-40"
             varient="outline"
-            icon={
-              <AntDesign
-                name="google"
-                size={globalStyle.icon.size}
-                color={globalStyle.icon.color}
-              />
-            }
+            icon={<AntDesign name="google" size={globalStyle.icon.size} color={iconColor} />}
           >
             Google
           </Button>
           <Button
             varient="outline"
             className="w-40"
-            icon={
-              <FontAwesome
-                name="apple"
-                size={globalStyle.icon.size}
-                color={globalStyle.icon.color}
-              />
-            }
+            icon={<FontAwesome name="apple" size={globalStyle.icon.size} color={iconColor} />}
           >
             Apple
           </Button>

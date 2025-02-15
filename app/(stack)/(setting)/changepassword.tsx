@@ -2,6 +2,7 @@ import FormikPassword from '@/components/formik/FormikPassword';
 import FormikWrapper from '@/components/formik/FormikWrapper';
 import BackWithTitle from '@/components/ui/Button/BackWithTitle';
 import Container from '@/components/ui/Container';
+import { useGlobalStore } from '@/store/global';
 import globalStyle from '@/utils/globalStyle';
 import imagePath from '@/utils/image-path';
 import Feather from '@expo/vector-icons/Feather';
@@ -10,6 +11,10 @@ import React from 'react';
 import { Image, View } from 'react-native';
 
 const ChangePasswordScreen = () => {
+  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+  const iconColor =
+    getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
+
   return (
     <Container>
       <View className="pt-6">
@@ -41,39 +46,21 @@ const ChangePasswordScreen = () => {
                 <FormikPassword
                   name="oldPassword"
                   placeholder="Old Password"
-                  icon={
-                    <Feather
-                      name="lock"
-                      size={globalStyle.icon.size}
-                      color={globalStyle.icon.color}
-                    />
-                  }
+                  icon={<Feather name="lock" size={globalStyle.icon.size} color={iconColor} />}
                 />
               </View>
               <View className="mb-3">
                 <FormikPassword
                   name="newPassword"
                   placeholder="New Password"
-                  icon={
-                    <Feather
-                      name="lock"
-                      size={globalStyle.icon.size}
-                      color={globalStyle.icon.color}
-                    />
-                  }
+                  icon={<Feather name="lock" size={globalStyle.icon.size} color={iconColor} />}
                 />
               </View>
               <View>
                 <FormikPassword
                   name="confirmPassword"
                   placeholder="Confirm New Password"
-                  icon={
-                    <Feather
-                      name="lock"
-                      size={globalStyle.icon.size}
-                      color={globalStyle.icon.color}
-                    />
-                  }
+                  icon={<Feather name="lock" size={globalStyle.icon.size} color={iconColor} />}
                 />
               </View>
             </FormikWrapper>

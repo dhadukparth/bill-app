@@ -49,7 +49,7 @@ const EditCustomerScreen = () => {
 
   return (
     <Container>
-      <View className="pt-10 p-4">
+      <View className="pt-8 p-4">
         <BackWithTitle title="Edit Customer" onBackClick={() => router.push('/customer')} />
 
         <View>

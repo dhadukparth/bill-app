@@ -1,4 +1,5 @@
 import { getData } from '@/lib/localstorage';
+import { useGlobalStore } from '@/store/global';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -9,6 +10,8 @@ import '../global.css';
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+  const changeTheme = useGlobalStore((state) => state.change.theme);
+
   const [loaded, error] = useFonts({
     'Inter-Regular': require('../assets/fonts/Inter/Inter-Regular.ttf'), // 400
     'Inter-Medium': require('../assets/fonts/Inter/Inter-Medium.ttf'), // 500
@@ -24,15 +27,15 @@ const RootLayout = () => {
     const hideSplashScreen = async () => {
       if (loaded || error) {
         try {
-          const getTheme = await getData('theme'); // Wait for AsyncStorage to resolve
-          console.log(getTheme);
+          const getTheme = await getData('theme');
           if (getTheme) {
-            colorScheme.set(getTheme); // Assuming `colorScheme.set()` is a valid function
+            changeTheme(getTheme);
+            colorScheme.set(getTheme);
           }
         } catch (err) {
           console.error('Error loading theme:', err);
         }
-        await SplashScreen.hideAsync(); // Ensure splash screen hides after logic
+        await SplashScreen.hideAsync();
       }
     };
 

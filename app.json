@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "bill-app",
-    "slug": "bill-app",
+    "name": "quickbill",
+    "slug": "quickbill",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,9 +13,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/main-logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.quickbillapp.quickbill"
     },
     "web": {
       "bundler": "metro",

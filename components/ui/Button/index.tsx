@@ -62,7 +62,7 @@ const Button = forwardRef<any, ButtonProps>(
               className={cn('font-semibold text-lg font-inter-semibold', {
                 'text-black dark:text-white': varient === 'outline',
                 'text-red-500': varient === 'danger-outline',
-                'text-white ': ['outline', 'danger', 'default'].includes(varient ?? ''),
+                'text-white ': ['danger', 'default'].includes(varient ?? ''),
               })}
             >
               {children}

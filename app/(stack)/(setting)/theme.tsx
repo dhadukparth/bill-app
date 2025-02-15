@@ -1,7 +1,9 @@
 import BackWithTitle from '@/components/ui/Button/BackWithTitle';
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
-import { getData, storeData } from '@/lib/localstorage';
+import { storeData } from '@/lib/localstorage';
+import { useGlobalStore } from '@/store/global';
+import { themeType } from '@/types';
 import globalStyle from '@/utils/globalStyle';
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
@@ -9,7 +11,6 @@ import { colorScheme } from 'nativewind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-export type themeType = 'light' | 'dark' | 'system';
 type themeListType = {
   label: string;
   value: themeType;
@@ -17,48 +18,26 @@ type themeListType = {
 };
 
 const ThemeScreen = () => {
-  const [currentTheme, setCurrentTheme] = React.useState<themeType>('system');
+  const storeGetTheme = useGlobalStore((state) => state.global.theme);
+  const storeChangeTheme = useGlobalStore((state) => state.change.theme);
 
-  const handleChangeTheme = (value: themeType) => {
-    setCurrentTheme(value);
-    colorScheme.set(value);
-    storeData('theme', value);
-  };
-
-  const fetchTheme = async () => {
-    try {
-      const getTheme = await getData('theme');
-      if (getTheme) {
-        setCurrentTheme(getTheme);
-      }
-    } catch (err) {
-      console.error('Error loading theme:', err);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchTheme();
-  }, []);
+  const iconColor = storeGetTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
 
   const themesList: themeListType[] = [
     {
       label: 'Dark',
       value: 'dark',
-      icon: (
-        <Feather name="moon" size={globalStyle.icon.size + 20} color={globalStyle.icon.color} />
-      ),
+      icon: <Feather name="moon" size={globalStyle.icon.size + 20} color={iconColor} />,
     },
     {
       label: 'Light',
       value: 'light',
-      icon: <Feather name="sun" size={globalStyle.icon.size + 20} color={globalStyle.icon.color} />,
+      icon: <Feather name="sun" size={globalStyle.icon.size + 20} color={iconColor} />,
     },
     {
       label: 'System',
       value: 'system',
-      icon: (
-        <Feather name="monitor" size={globalStyle.icon.size + 20} color={globalStyle.icon.color} />
-      ),
+      icon: <Feather name="monitor" size={globalStyle.icon.size + 20} color={iconColor} />,
     },
   ];
 
@@ -72,7 +51,11 @@ const ThemeScreen = () => {
             <Pressable
               key={index}
               className="relative"
-              onPress={() => handleChangeTheme(item.value)}
+              onPress={() => {
+                colorScheme.set(item.value);
+                storeData('theme', item.value);
+                storeChangeTheme(item.value);
+              }}
             >
               <View className="flex justify-center items-center gap-3">
                 <View className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-700  size-24 flex justify-center items-center rounded-lg">
@@ -82,7 +65,7 @@ const ThemeScreen = () => {
                   <Title>{item.label}</Title>
                 </View>
               </View>
-              {currentTheme === item.value ? (
+              {storeGetTheme === item.value ? (
                 <View className="bg-blue-500 p-1 w-fit absolute rounded-full -top-3 -right-3">
                   <Feather
                     name="check"

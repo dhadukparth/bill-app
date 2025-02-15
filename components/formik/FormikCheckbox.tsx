@@ -25,4 +25,4 @@ const FormikCheckbox: React.FC<FormikCheckboxProps> = ({ name, disabled, optionL
   );
 };
 
-export default FormikCheckbox;
+export default React.memo(FormikCheckbox);
