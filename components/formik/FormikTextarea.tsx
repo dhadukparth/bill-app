@@ -14,9 +14,9 @@ const FormikTextarea = React.forwardRef<TextInput, FormikTextareaProps>(
   ({ name, label, placeholder, disabled, readonly, ...props }, ref) => {
     const [field, meta, helpers] = useField(name);
 
-    const handleOnChange = (text: string) => {
+    const handleOnChange = React.useCallback((text: string) => {
       helpers.setValue(text);
-    };
+    }, []);
 
     return (
       <View>

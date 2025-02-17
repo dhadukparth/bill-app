@@ -15,9 +15,9 @@ const FormikPasswordInput = React.forwardRef<TextInput, FormikPasswordInputProps
   ({ name, label, placeholder, disabled, readonly, ...props }, ref) => {
     const [field, meta, helpers] = useField(name);
 
-    const handleOnChange = (text: string) => {
+    const handleOnChange = React.useCallback((text: string) => {
       helpers.setValue(text);
-    };
+    }, []);
 
     return (
       <View>

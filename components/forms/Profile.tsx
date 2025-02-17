@@ -34,7 +34,6 @@ const ProfileForm = () => {
     });
 
     if (!result.canceled) {
-      console.log(result);
       setChooseImageUrl(result.assets[0].uri);
     }
   };

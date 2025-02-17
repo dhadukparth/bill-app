@@ -21,7 +21,7 @@ const TextareaBox = React.forwardRef<TextInput, TextareaBoxProps>(
         )}
         <View className="relative">
           {icon && iconDirection === 'left' ? (
-            <View className="absolute top-1/2 left-6 -translate-y-1/2 -translate-x-1/2 z-10">
+            <View className="absolute top-6 left-6 -translate-y-1/2 -translate-x-1/2 z-10">
               {icon}
             </View>
           ) : null}
@@ -43,7 +43,7 @@ const TextareaBox = React.forwardRef<TextInput, TextareaBoxProps>(
             {...props}
           />
           {icon && iconDirection === 'right' ? (
-            <View className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-1/2 z-10">
+            <View className="absolute top-6 right-1 -translate-y-1/2 -translate-x-1/2 z-10">
               {icon}
             </View>
           ) : null}

@@ -11,7 +11,7 @@ type recentTransactionsListType = {
   paymentType: 'credit' | 'debit';
 };
 
-const RecentTransaction = ({ maxLength }: { maxLength?: number }) => {
+const HistorySection = ({ maxLength }: { maxLength?: number }) => {
   const recentTransactionsList: recentTransactionsListType[] = [
     {
       image:
@@ -83,7 +83,7 @@ const RecentTransaction = ({ maxLength }: { maxLength?: number }) => {
       {recentTransactionsList.slice(0, maxLength).map((item, index) => (
         <View
           key={index}
-          className="flex flex-row justify-between items-center px-4 py-6 border border-gray-200 dark:border-gray-500 rounded-xl my-2"
+          className="flex flex-row justify-between items-center px-4 py-3 border border-gray-200 dark:border-gray-800 rounded-xl my-2"
         >
           <View className="flex flex-row justify-start items-center gap-3">
             <View className="size-14 rounded-full">
@@ -121,4 +121,4 @@ const RecentTransaction = ({ maxLength }: { maxLength?: number }) => {
   );
 };
 
-export default React.memo(RecentTransaction);
+export default React.memo(HistorySection);

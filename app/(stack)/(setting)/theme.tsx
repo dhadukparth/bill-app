@@ -1,6 +1,7 @@
 import BackWithTitle from '@/components/ui/Button/BackWithTitle';
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
+import { localstorage_keys } from '@/constant';
 import { storeData } from '@/lib/localstorage';
 import { useGlobalStore } from '@/store/global';
 import { themeType } from '@/types';
@@ -53,7 +54,7 @@ const ThemeScreen = () => {
               className="relative"
               onPress={() => {
                 colorScheme.set(item.value);
-                storeData('theme', item.value);
+                storeData(localstorage_keys.theme, item.value);
                 storeChangeTheme(item.value);
               }}
             >

@@ -13,9 +13,9 @@ interface FormikCheckboxProps extends CheckBoxProps {
 const FormikCheckbox: React.FC<FormikCheckboxProps> = ({ name, disabled, optionList }) => {
   const [field, meta, helpers] = useField(name);
 
-  const handleOnChange = (selected: OptionWithId[]) => {
+  const handleOnChange = React.useCallback((selected: OptionWithId[]) => {
     helpers.setValue(selected);
-  };
+  }, []);
 
   return (
     <View>

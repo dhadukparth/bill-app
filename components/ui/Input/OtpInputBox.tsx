@@ -16,7 +16,6 @@ const OtpInput: React.FC<OtpInputProps> = ({ onChange, otpLength = 4 }) => {
       setOtp(newOtp);
 
       const joinValue = newOtp.join('');
-      console.log(joinValue);
       onChange(joinValue);
 
       if (text && index < otpLength - 1) {

@@ -1,4 +1,4 @@
-import RecentTransaction from '@/components/screen/Home/RecentTransaction';
+import HistorySection from '@/components/screen/Home/HistorySection';
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
 import { useGlobalStore } from '@/store/global';
@@ -128,7 +128,7 @@ const HomePage = () => {
                 Recent Transactions
               </Title>
             </View>
-            <RecentTransaction maxLength={4} />
+            <HistorySection maxLength={4} />
           </View>
         </View>
       </Container>

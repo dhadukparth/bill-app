@@ -27,7 +27,7 @@ const SelectBox = React.memo(
     ) => {
       const getCurrentTheme = useGlobalStore((state) => state.global.theme);
       const backgroundColor =
-        getCurrentTheme === 'light' ? globalStyle.colors.light : globalStyle.colors.dark;
+        getCurrentTheme === 'light' ? globalStyle.colors.gray[100] : globalStyle.colors.gray[800];
       const color =
         getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
 
@@ -48,10 +48,11 @@ const SelectBox = React.memo(
               style={[styles.dropdown, { backgroundColor }]}
               searchPlaceholderTextColor={color}
               placeholderStyle={[styles.labelText, { color }]}
-              inputSearchStyle={[styles.labelText, { color, backgroundColor }]}
+              inputSearchStyle={[styles.labelText, { color }]}
               containerStyle={{ backgroundColor }}
               itemTextStyle={[styles.labelText, { color }]}
               selectedTextStyle={[styles.labelText, { color }]}
+              activeColor={globalStyle.colors.gray[500]}
               maxHeight={300}
               labelField="label"
               valueField="value"

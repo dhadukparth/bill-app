@@ -1,6 +1,4 @@
-import { useGlobalStore } from '@/store/global';
 import { Option } from '@/types';
-import globalStyle from '@/utils/globalStyle';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
@@ -9,6 +7,7 @@ export interface RadioButtonProps {
   onChange?: (selectedValue: Option) => void;
   editable?: boolean;
   className?: string;
+  selectValue?: Option;
 }
 
 const RedioButton: React.FC<RadioButtonProps> = ({
@@ -16,20 +15,10 @@ const RedioButton: React.FC<RadioButtonProps> = ({
   onChange,
   className,
   editable = true,
+  selectValue,
 }) => {
-  const [checked, setChecked] = React.useState<Option>(optionList[0]);
-
-  const getCurrentTheme = useGlobalStore((state) => state.global.theme);
-  const iconColor =
-    getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
-
   const handleCheckValue = (value: Option) => {
-    return checked.value === value.value;
-  };
-
-  const handleOnChange = (value: Option) => {
-    onChange && onChange(value);
-    setChecked(value);
+    return selectValue && selectValue.value === value.value;
   };
 
   return (
@@ -37,9 +26,7 @@ const RedioButton: React.FC<RadioButtonProps> = ({
       {optionList.map((item: Option, index) => (
         <View key={index} className="w-fit">
           <Pressable
-            onPress={() => {
-              editable ? handleOnChange(item) : {};
-            }}
+            onPress={() => (editable ? onChange && onChange(item) : {})}
             className="flex flex-row justify-start items-center gap-2 mb-2"
           >
             {handleCheckValue(item) ? (

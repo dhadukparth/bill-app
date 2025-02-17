@@ -1,4 +1,6 @@
 import { Title } from '@/components/ui/HeadText';
+import Loader from '@/components/ui/Loader';
+import { getTransactionPeoples } from '@/lib/filesystem/bills';
 import { useGlobalStore } from '@/store/global';
 import { cn, conditionCheck } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
@@ -16,8 +18,34 @@ const PeopleSection = () => {
     globalStyle.colors.black
   );
 
+  const [loading, setLoading] = React.useState(false);
   const [extendPeople, setExtendPeople] = React.useState(false);
-  const [pepolesList, setPepolesList] = React.useState([]);
+  const [pepolesList, setPepolesList] = React.useState<any[]>([]);
+
+  const fetchAllPeoples = async () => {
+    try {
+      setLoading(true);
+      const result = await getTransactionPeoples();
+      setPepolesList(result);
+    } catch (error) {
+      console.log(error);
+      setPepolesList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchAllPeoples();
+  }, []);
+
+  if (loading) {
+    return (
+      <View>
+        <Loader color={iconColor} />
+      </View>
+    );
+  }
 
   if (!pepolesList?.length) {
     return null;
@@ -42,7 +70,7 @@ const PeopleSection = () => {
             }}
           />
         ))}
-        {pepolesList?.length < 8 ? (
+        {pepolesList?.length > 8 ? (
           <PeopleCard
             firstName="More"
             lastName=""

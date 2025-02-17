@@ -4,6 +4,8 @@ import FormikPassword from '@/components/formik/FormikPassword';
 import FormikWrapper from '@/components/formik/FormikWrapper';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
+import { adminUser, localstorage_keys } from '@/constant';
+import { storeData } from '@/lib/localstorage';
 import { useGlobalStore } from '@/store/global';
 import globalStyle from '@/utils/globalStyle';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -13,13 +15,39 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link, router } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, ToastAndroid, View } from 'react-native';
 
 const LoginScreen = () => {
   const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+  const loginStorageFn = useGlobalStore((state) => state.change.login);
+  const loginUser = useGlobalStore((state) => state.user);
 
   const iconColor =
     getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
+
+  const initialValues = { email: '', password: '', rememberMe: [] };
+
+  const handleOnSubmit = async (value: typeof initialValues, { resetForm }: any) => {
+    if (value.email === adminUser.email && value.password === adminUser.password) {
+      ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
+      if (value.rememberMe.length) {
+        storeData(localstorage_keys.remember, true);
+      }
+
+      loginStorageFn(adminUser);
+      router.push('/(tabs)');
+    } else {
+      ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT);
+    }
+  };
+
+  const handleCheckUserLogin = () => {
+    console.log(loginUser);
+    if (loginUser) {
+      router.push('/(tabs)');
+    }
+  };
+
   return (
     <Container>
       <View className="pt-6">
@@ -29,9 +57,9 @@ const LoginScreen = () => {
           </Text>
         </View>
         <FormikWrapper
-          initialValues={{ email: '', password: '', rememberMe: [] }}
+          initialValues={initialValues}
           validationSchema={null}
-          onSubmit={() => router.push('/(tabs)')}
+          onSubmit={handleOnSubmit}
           submitBtn={{
             title: 'Login',
             loading: false,
@@ -50,6 +78,7 @@ const LoginScreen = () => {
             label="Email"
             keyboardType="email-address"
             placeholder="Email"
+            autoCapitalize="none"
             icon={<Fontisto name="email" size={globalStyle.icon.size} color={iconColor} />}
           />
           <FormikPassword

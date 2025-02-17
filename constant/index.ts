@@ -22,3 +22,17 @@ export const filterStatementButtonList: Option[] = [
     value: 365,
   },
 ];
+
+export const localstorage_keys = {
+  welcome: '_qkwlc',
+  theme: '_qkttc',
+  remember: '_qklrm',
+};
+
+export const adminUser = {
+  id: '510',
+  firstName: 'Parth',
+  lastName: 'Admin',
+  email: 'parth@gmail.com',
+  password: 'Parth@123',
+};

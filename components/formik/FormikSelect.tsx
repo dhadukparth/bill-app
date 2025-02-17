@@ -15,16 +15,16 @@ const FormikSelect = React.forwardRef<IDropdownRef, FormikSelectProps>(
   ({ label, name, optionList, ...props }, ref) => {
     const [field, meta, helpers] = useField(name);
 
-    const handleOnChange = (item: Option) => {
-      helpers.setValue(item); // Store only `{ label, value }`
-    };
+    const handleOnChange = React.useCallback((item: Option) => {
+      helpers.setValue(item);
+    }, []);
 
     return (
       <View>
         <SelectBox
           ref={ref}
           label={label}
-          value={field.value?.value || null}
+          value={field.value}
           optionList={optionList}
           onChange={handleOnChange}
           {...props}

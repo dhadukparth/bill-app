@@ -104,8 +104,8 @@ const Customer = () => {
         ) : (
           <View>
             {filterCustomerList?.length ? (
-              <ScrollView>
-                <View className="mb-12">
+              <ScrollView className="pb-12">
+                <View>
                   {filterCustomerList?.map((item: any, index) => (
                     <Link
                       key={index}

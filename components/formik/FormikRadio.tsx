@@ -18,14 +18,15 @@ const FormikRadioButton: React.FC<FormikRadioProps> = ({
 }) => {
   const [field, meta, helpers] = useField(name);
 
-  const handleOnChange = (selected: Option) => {
+  const handleOnChange = React.useCallback((selected: Option) => {
     helpers.setValue(selected);
-  };
+  }, []);
 
   return (
     <View>
       <RadioButton
         optionList={optionList}
+        selectValue={field.value}
         onChange={handleOnChange}
         editable={disabled}
         {...props}

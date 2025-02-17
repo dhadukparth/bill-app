@@ -13,6 +13,7 @@ const stackScreenRoutes = {
   helpCenter: '(setting)/helpcenter',
   newCustomer: '(customer)/new-customer',
   editCustomer: '(customer)/edit-customer',
+  history: '(bill)/history',
   statementList: '(bill)/statement-list',
   statementInfo: '(bill)/statement-info',
   newStatement: '(bill)/new-statement',

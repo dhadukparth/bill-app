@@ -18,6 +18,7 @@ const buttonVariants = cva(
         default: 'bg-blue-500',
         outline: 'bg-transparent border dark:border-white border-gray-950',
         danger: 'bg-red-500 border dark:border-red-500 border-red-500',
+        ghost: 'bg-transparent',
         'danger-outline': 'bg-transparent border dark:border-red-500 border-red-600',
       },
     },
@@ -33,6 +34,7 @@ export interface ButtonProps extends PressableProps, VariantProps<typeof buttonV
   children: string;
   icon?: React.ReactNode;
   loaderColor?: string;
+  titleClassName?: string;
   iconDirection?: 'left' | 'right';
 }
 
@@ -42,6 +44,7 @@ const Button = forwardRef<any, ButtonProps>(
       children,
       isLoading,
       className,
+      titleClassName,
       size,
       icon,
       loaderColor = globalStyle.colors.white,
@@ -59,11 +62,15 @@ const Button = forwardRef<any, ButtonProps>(
           <View className="flex flex-row justify-center items-center gap-2">
             {icon && iconDirection === 'left' ? icon : null}
             <Text
-              className={cn('font-semibold text-lg font-inter-semibold', {
-                'text-black dark:text-white': varient === 'outline',
-                'text-red-500': varient === 'danger-outline',
-                'text-white ': ['danger', 'default'].includes(varient ?? ''),
-              })}
+              className={cn(
+                'font-semibold text-lg font-inter-semibold ',
+                {
+                  'text-black dark:text-white': varient === 'outline',
+                  'text-red-500': varient === 'danger-outline',
+                  'text-white ': ['danger', 'default'].includes(varient ?? ''),
+                },
+                titleClassName
+              )}
             >
               {children}
             </Text>

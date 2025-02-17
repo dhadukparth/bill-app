@@ -1,4 +1,4 @@
-import router from '@/router';
+import router from '@/router/appRouter';
 import { Stack } from 'expo-router';
 import React from 'react';
 
@@ -57,6 +57,10 @@ const StackLayout = () => {
       <Stack.Screen
         name={router.stack.statementList}
         options={{ title: 'Statement List', headerShown: false }}
+      />
+      <Stack.Screen
+        name={router.stack.history}
+        options={{ title: 'History', headerShown: false }}
       />
       <Stack.Screen
         name={router.stack.statementInfo}

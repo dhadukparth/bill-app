@@ -8,3 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function conditionCheck<T>(condition: boolean, trueResult: T, falseResult: T): T {
   return condition ? trueResult : falseResult;
 }
+
+export function margeString(values: string[]) {
+  return values.join(' ');
+}

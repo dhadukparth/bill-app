@@ -40,7 +40,7 @@ const NewCustomerScreen = () => {
   return (
     <Container>
       <View className="pt-8 p-4">
-        <BackWithTitle title="New Customer" onBackClick={() => router.push('/customer')} />
+        <BackWithTitle title="New Customer" />
 
         <View>
           <FormikWrapper

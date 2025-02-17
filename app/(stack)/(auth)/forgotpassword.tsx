@@ -40,6 +40,7 @@ const FPSendEmail = () => {
               name="email"
               label="Email"
               keyboardType="email-address"
+              autoCapitalize="none"
               placeholder="Email"
               icon={
                 <Fontisto

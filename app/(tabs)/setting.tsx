@@ -1,5 +1,7 @@
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
+import { localstorage_keys } from '@/constant';
+import { removeData } from '@/lib/localstorage';
 import { useGlobalStore } from '@/store/global';
 import { cn } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
@@ -12,17 +14,32 @@ import { Link, router, useFocusEffect } from 'expo-router';
 import React from 'react';
 import { Image, Pressable, ScrollView, View } from 'react-native';
 
+type MenuItemBase = {
+  title: string;
+  icon: React.ReactNode;
+  link: any;
+  asBtn?: false; // Default is false
+  onPress?: never; // onPress should not exist when asBtn is false
+};
+
+type MenuItemButton = {
+  title: string;
+  icon: React.ReactNode;
+  link?: never;
+  asBtn: true; // When true, onPress is required
+  onPress: () => void;
+};
+
+type MenuItem = MenuItemBase | MenuItemButton;
+
 type SettingMenuListType = {
   sectionTitle: string;
-  sectionMenus: {
-    title: string;
-    icon: React.ReactNode;
-    link: any;
-  }[];
+  sectionMenus: MenuItem[];
 };
 
 const Setting = () => {
   const scrollViewRef = React.useRef<ScrollView>(null);
+  const logoutFn = useGlobalStore((state) => state.change.logout);
 
   const getCurrentTheme = useGlobalStore((state) => state.global.theme);
   const iconColor =
@@ -86,7 +103,12 @@ const Setting = () => {
         {
           title: 'Logout',
           icon: <MaterialIcons name="logout" size={globalStyle.icon.size} color={iconColor} />,
-          link: '/',
+          asBtn: true,
+          onPress: () => {
+            logoutFn();
+            removeData(localstorage_keys.remember);
+            router.push('/login');
+          },
         },
       ],
     },
@@ -149,10 +171,13 @@ const Setting = () => {
                           'border-b-0': subMenuIndex === item.sectionMenus.length - 1,
                         }
                       )}
-                      onPress={() =>
-                        router.push({
-                          pathname: subMenu.link,
-                        })
+                      onPress={
+                        subMenu?.asBtn
+                          ? subMenu.onPress
+                          : () =>
+                              router.push({
+                                pathname: subMenu.link,
+                              })
                       }
                     >
                       <View className="flex flex-row justify-start items-center gap-3">

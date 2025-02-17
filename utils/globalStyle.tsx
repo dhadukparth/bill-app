@@ -13,6 +13,11 @@ const GRAY = {
   900: '#111827',
 };
 
+const BLUE = {
+  500: '#3b82f6',
+  600: '#2563eb',
+};
+
 export default {
   icon: {
     size: 20,
@@ -21,8 +26,7 @@ export default {
   colors: {
     white: WHITE,
     black: BLACK,
-    dark: '#1f2937',
-    light: '#f3f4f6',
     gray: GRAY,
+    blue: BLUE,
   },
 };

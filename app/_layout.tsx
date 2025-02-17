@@ -1,7 +1,8 @@
+import { adminUser, localstorage_keys } from '@/constant';
 import { getData } from '@/lib/localstorage';
 import { useGlobalStore } from '@/store/global';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { colorScheme } from 'nativewind';
 import React from 'react';
@@ -11,6 +12,7 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const changeTheme = useGlobalStore((state) => state.change.theme);
+  const loginStorageFn = useGlobalStore((state) => state.change.login);
 
   const [loaded, error] = useFonts({
     'Inter-Regular': require('../assets/fonts/Inter/Inter-Regular.ttf'), // 400
@@ -23,22 +25,37 @@ const RootLayout = () => {
     'Poppins-SemiBold': require('../assets/fonts/Poppins/Poppins-SemiBold.ttf'), // 700
   });
 
-  React.useEffect(() => {
-    const hideSplashScreen = async () => {
-      if (loaded || error) {
-        try {
-          const getTheme = await getData('theme');
-          if (getTheme) {
-            changeTheme(getTheme);
-            colorScheme.set(getTheme);
-          }
-        } catch (err) {
-          console.error('Error loading theme:', err);
-        }
-        await SplashScreen.hideAsync();
-      }
-    };
+  const hideSplashScreen = async () => {
+    if (loaded || error) {
+      try {
+        const getTheme = await getData(localstorage_keys.theme);
+        const getWelcome = await getData(localstorage_keys.welcome);
+        const getRemember = await getData(localstorage_keys.remember);
 
+        if (getTheme) {
+          changeTheme(getTheme);
+          colorScheme.set(getTheme);
+        }
+
+        if (getWelcome) {
+          if (getRemember) {
+            loginStorageFn(adminUser);
+            router.push('/(tabs)');
+          } else {
+            router.push('/login');
+          }
+        }
+      } catch (err) {
+        console.error('Error loading theme:', err);
+      } finally {
+        setTimeout(async () => {
+          await SplashScreen.hideAsync();
+        }, 2000);
+      }
+    }
+  };
+
+  React.useEffect(() => {
     hideSplashScreen();
   }, [loaded, error]);
 

@@ -1,16 +1,22 @@
 import { themeType } from '@/types';
 import { create } from 'zustand';
 
+type loginUserType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: string;
+};
+
 // Define the global store interface
 export interface GlobalStore {
   global: { theme: themeType; lan: string };
+  user: loginUserType | false;
   change: {
     theme: (newTheme: themeType) => void;
     language: (newLang: string) => void;
-  };
-  default: {
-    theme: () => void;
-    language: () => void;
+    login: (user: loginUserType) => void;
+    logout: () => void;
   };
 }
 
@@ -20,6 +26,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     theme: 'dark',
     lan: 'en',
   },
+  user: false,
   change: {
     theme: (newTheme: themeType) =>
       set((state) => ({
@@ -29,15 +36,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
       set((state) => ({
         global: { ...state.global, lan: newLang },
       })),
-  },
-  default: {
-    theme: () =>
-      set(() => ({
-        global: { theme: 'dark', lan: '' },
-      })),
-    language: () =>
-      set((state) => ({
-        global: { ...state.global, lan: 'en' },
-      })),
+    login: (user) => set({ user }),
+    logout: () => set({ user: false }),
   },
 }));

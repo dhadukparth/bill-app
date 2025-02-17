@@ -1,4 +1,4 @@
-import router from '@/router';
+import router from '@/router/appRouter';
 import { useGlobalStore } from '@/store/global';
 import { conditionCheck } from '@/utils';
 import globalStyle from '@/utils/globalStyle';

@@ -1,4 +1,4 @@
-import { ConvertToUTC, GetToday } from '@/utils/moment';
+import { ConvertToUTC, GetToday } from '@/lib/moment';
 import * as FileSystem from 'expo-file-system';
 import { ToastAndroid } from 'react-native';
 
@@ -13,7 +13,7 @@ type customerDataType = {
 };
 
 // Function to read the existing customers
-export const readCustomers = async () => {
+export const readCustomers = async (customerId: string = '') => {
   try {
     const fileInfo = await FileSystem.getInfoAsync(fileUri);
     if (!fileInfo.exists) {
@@ -22,9 +22,14 @@ export const readCustomers = async () => {
 
     const content = await FileSystem.readAsStringAsync(fileUri);
     const customers = JSON.parse(content);
-    return customers.sort(
+    const sortedCustomer = customers.sort(
       (a: any, b: any) => new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime()
     );
+    if (customerId?.length) {
+      return sortedCustomer?.find((item: any) => item?.id === customerId);
+    } else {
+      return sortedCustomer;
+    }
   } catch (error) {
     console.error('Error reading customer data:', error);
     return [];
@@ -129,7 +134,6 @@ export const clearCustomers = async (): Promise<boolean> => {
       encoding: FileSystem.EncodingType.UTF8,
     });
 
-    console.log('All customer data cleared successfully.');
     return true;
   } catch (error) {
     console.error('Error clearing customer data:', error);

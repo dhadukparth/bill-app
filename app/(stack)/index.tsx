@@ -1,8 +1,10 @@
 import Slider from '@/components/slider';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
+import { localstorage_keys } from '@/constant';
+import { storeData } from '@/lib/localstorage';
 import imagePath from '@/utils/image-path';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 
@@ -27,9 +29,14 @@ const WelcomeScreen = () => {
     },
   ];
 
+  const handleGetStartClick = () => {
+    storeData(localstorage_keys.welcome, true);
+    router.push('/login');
+  };
+
   return (
     <Container>
-      <View className="py-10">
+      <View className="py-10 h-full">
         <View className="h-4/5">
           <Slider dotColor="#E5E7EB" activeDotColor="#3B82F6" loop autoplay>
             {welcomeData.map((item, index) => (
@@ -53,18 +60,18 @@ const WelcomeScreen = () => {
           {/* Get Started Button */}
           <Button
             className="mt-6 bg-blue-600 py-3 rounded-lg items-center"
-            onPress={() => router.push('/(tabs)')}
+            onPress={handleGetStartClick}
           >
             Get Started
           </Button>
 
           {/* Sign In Link */}
-          <Text className="text-center text-gray-500 dark:text-white mt-4 font-poppins-regular">
+          {/* <Text className="text-center text-gray-500 dark:text-white mt-4 font-poppins-regular">
             Already have an account?{' '}
             <Link href="/(stack)/(auth)/login">
               <Text className="text-blue-600 font-semibold font-inter-semibold">Sign In</Text>
             </Link>
-          </Text>
+          </Text> */}
         </View>
       </View>
     </Container>
