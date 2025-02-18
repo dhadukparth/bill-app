@@ -1,4 +1,3 @@
-import router from '@/router/appRouter';
 import { useGlobalStore } from '@/store/global';
 import { conditionCheck } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
@@ -45,7 +44,7 @@ const TabsLayout = () => {
       }}
     >
       <Tabs.Screen
-        name={router.tabs.home}
+        name="dashboard"
         options={{
           headerShown: false,
           title: 'Home',
@@ -55,7 +54,7 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name={router.tabs.bills}
+        name="bills"
         options={{
           headerShown: false,
           title: 'Bills',
@@ -65,7 +64,7 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name={router.tabs.customer}
+        name="customer"
         options={{
           headerShown: false,
           title: 'Customer',
@@ -75,7 +74,7 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name={router.tabs.setting}
+        name="setting"
         options={{
           headerShown: false,
           title: 'Settings',

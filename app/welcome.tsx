@@ -2,13 +2,14 @@ import Slider from '@/components/slider';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
 import { localstorage_keys } from '@/constant';
-import { storeData } from '@/lib/localstorage';
+import { getData, storeData } from '@/lib/localstorage';
 import imagePath from '@/utils/image-path';
-import { router } from 'expo-router';
+import { router, usePathname } from 'expo-router';
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 
 const WelcomeScreen = () => {
+  const location = usePathname();
   const welcomeData = [
     {
       title: 'Smart Billing Solutions',
@@ -31,8 +32,19 @@ const WelcomeScreen = () => {
 
   const handleGetStartClick = () => {
     storeData(localstorage_keys.welcome, true);
-    router.push('/login');
+    router.push('/');
   };
+
+  const handleWelcome = async () => {
+    const getWelcome = await getData(localstorage_keys.welcome);
+    if (getWelcome) {
+      // router.push('/');
+    }
+  };
+
+  React.useLayoutEffect(() => {
+    handleWelcome();
+  }, [location]);
 
   return (
     <Container>

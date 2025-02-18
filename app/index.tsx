@@ -5,7 +5,7 @@ import FormikWrapper from '@/components/formik/FormikWrapper';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
 import { adminUser, localstorage_keys } from '@/constant';
-import { storeData } from '@/lib/localstorage';
+import { clearStorage, storeData } from '@/lib/localstorage';
 import { useGlobalStore } from '@/store/global';
 import globalStyle from '@/utils/globalStyle';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -16,6 +16,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link, router } from 'expo-router';
 import React from 'react';
 import { Text, ToastAndroid, View } from 'react-native';
+import { useAuth } from '../providers/AuthProvider';
 
 const LoginScreen = () => {
   const getCurrentTheme = useGlobalStore((state) => state.global.theme);
@@ -25,8 +26,8 @@ const LoginScreen = () => {
   const iconColor =
     getCurrentTheme === 'dark' ? globalStyle.colors.white : globalStyle.colors.black;
 
-  const initialValues = { email: '', password: '', rememberMe: [] };
-
+  const initialValues = { email: adminUser.email, password: adminUser.password, rememberMe: [] };
+  const { login } = useAuth();
   const handleOnSubmit = async (value: typeof initialValues, { resetForm }: any) => {
     if (value.email === adminUser.email && value.password === adminUser.password) {
       ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
@@ -35,16 +36,11 @@ const LoginScreen = () => {
       }
 
       loginStorageFn(adminUser);
-      router.push('/(tabs)');
+      login(adminUser);
+
+      router.push('/(auth)/(tabs)/dashboard');
     } else {
       ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT);
-    }
-  };
-
-  const handleCheckUserLogin = () => {
-    console.log(loginUser);
-    if (loginUser) {
-      router.push('/(tabs)');
     }
   };
 
@@ -110,6 +106,7 @@ const LoginScreen = () => {
             className="w-40"
             varient="outline"
             icon={<AntDesign name="google" size={globalStyle.icon.size} color={iconColor} />}
+            onPress={() => clearStorage()}
           >
             Google
           </Button>

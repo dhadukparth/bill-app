@@ -1,14 +1,19 @@
-import { adminUser, localstorage_keys } from '@/constant';
+import { localstorage_keys } from '@/constant';
 import { getData } from '@/lib/localstorage';
 import { useGlobalStore } from '@/store/global';
 import { useFonts } from 'expo-font';
-import { router, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { colorScheme } from 'nativewind';
 import React from 'react';
 import '../global.css';
+import { AuthProvider } from '../providers/AuthProvider';
 
 SplashScreen.preventAutoHideAsync();
+
+export const unstable_settings = {
+  initialRouteName: 'welcome',
+};
 
 const RootLayout = () => {
   const changeTheme = useGlobalStore((state) => state.change.theme);
@@ -29,21 +34,9 @@ const RootLayout = () => {
     if (loaded || error) {
       try {
         const getTheme = await getData(localstorage_keys.theme);
-        const getWelcome = await getData(localstorage_keys.welcome);
-        const getRemember = await getData(localstorage_keys.remember);
-
         if (getTheme) {
           changeTheme(getTheme);
           colorScheme.set(getTheme);
-        }
-
-        if (getWelcome) {
-          if (getRemember) {
-            loginStorageFn(adminUser);
-            router.push('/(tabs)');
-          } else {
-            router.push('/login');
-          }
         }
       } catch (err) {
         console.error('Error loading theme:', err);
@@ -64,10 +57,9 @@ const RootLayout = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="(stack)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <Slot />
+    </AuthProvider>
   );
 };
 

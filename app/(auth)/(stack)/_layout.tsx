@@ -1,28 +1,14 @@
+import { useAuth } from '@/providers/AuthProvider';
 import router from '@/router/appRouter';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 import React from 'react';
 
 const StackLayout = () => {
+  const { user } = useAuth();
+
+  if (!user) return <Redirect href="/login" />;
   return (
     <Stack>
-      {/* Main Screen */}
-      <Stack.Screen name={router.stack.home} options={{ title: 'Welcome', headerShown: false }} />
-
-      {/* Authentication Screens - Prefix with (auth)/ */}
-      <Stack.Screen name={router.stack.login} options={{ title: 'Login', headerShown: false }} />
-      <Stack.Screen
-        name={router.stack.forgotpassword}
-        options={{ title: 'Forgot Password', headerShown: false }}
-      />
-      <Stack.Screen
-        name={router.stack.verifyemail}
-        options={{ title: 'Verify Email', headerShown: false }}
-      />
-      <Stack.Screen
-        name={router.stack.resetpassword}
-        options={{ title: 'Reset Password', headerShown: false }}
-      />
-
       {/* Settings Screens - Prefix with (setting)/ */}
       <Stack.Screen name="(setting)/profile" options={{ title: 'Profile', headerShown: false }} />
       <Stack.Screen
