@@ -4,7 +4,6 @@ import { useAuth } from '../../providers/AuthProvider';
 
 const AuthRouters = () => {
   const { user } = useAuth();
-  console.log('USER', user);
   return (
     <Stack screenOptions={{ headerShown: false }}>
       {!user ? (

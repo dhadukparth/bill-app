@@ -9,7 +9,7 @@ import statementActivityType from '@/constant/statementActivityType';
 import { readBills } from '@/lib/filesystem/bills';
 import { ConvertToUTC } from '@/lib/moment';
 import { useGlobalStore } from '@/store/global';
-import { cn, conditionCheck, margeString } from '@/utils';
+import { cn, conditionCheck, mergeString } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -34,6 +34,7 @@ const StatementList = () => {
   const [loading, setLoading] = React.useState(false);
   const [customerInfo, setCustomerInfo] = React.useState<any>(null);
   const [transactionList, setTransactionList] = React.useState([]);
+  const [totalAmount, setTotalAmount] = React.useState<any>(null);
 
   const fetchAllStatementList = async () => {
     try {
@@ -41,6 +42,23 @@ const StatementList = () => {
       const result = await readBills(params?.id);
       setCustomerInfo(result?.customer);
       setTransactionList(result?.statementList);
+      const totalAmountsList = result?.statementList?.map((item: any) => ({
+        amount: item?.amount,
+        type: item?.billType,
+      }));
+
+      const totalAmount = totalAmountsList?.reduce(
+        (acc: any, item: any) => {
+          if (item?.type === 'debit') acc.debitAmount += item?.amount;
+          else if (item?.type === 'credit') acc.creditAmount += item?.amount;
+          return acc;
+        },
+        {
+          creditAmount: 0,
+          debitAmount: 0,
+        }
+      );
+      setTotalAmount(totalAmount);
     } catch (error) {
       console.log(error);
       setTransactionList([]);
@@ -76,7 +94,7 @@ const StatementList = () => {
         <View className="mt-4 px-4">
           <BackWithTitle
             onBackClick={() => router.push('/bills')}
-            title="Statements"
+            title={mergeString([customerInfo?.firstName, customerInfo?.lastName])}
             rightIcon={
               <Pressable
                 className="bg-blue-500 p-2 rounded-lg w-fit"
@@ -102,28 +120,38 @@ const StatementList = () => {
         </View>
 
         {/* card */}
-        <View className="my-4 bg-blue-600 py-8 px-6">
+        <View className="my-4 bg-blue-600 py-8 px-5">
           <View className="flex flex-row justify-between items-center">
-            <View>
+            <View className="w-[45%]">
               <Title size="large" fonts="poppins-semibold" className="text-white">
-                Balance
+                Credit Balance
               </Title>
-              <Title size="3xl" fonts="inter-bold" className="text-white">
-                ₹ 24,345.00
+              <View className="flex flex-row justify-between items-center">
+                <Title size="3xl" fonts="inter-bold" className="text-white">
+                  {`₹ ${totalAmount?.creditAmount}`}
+                </Title>
+                <AntDesign
+                  name="arrowup"
+                  size={globalStyle.icon.size + 6}
+                  color={globalStyle.colors.white}
+                />
+              </View>
+            </View>
+            <View className="w-[45%]">
+              <Title size="large" fonts="poppins-semibold" className="text-white">
+                Debit Balance
               </Title>
+              <View className="flex flex-row justify-between items-center">
+                <Title size="3xl" fonts="inter-bold" className="text-white">
+                  {`₹ ${totalAmount?.debitAmount}`}
+                </Title>
+                <AntDesign
+                  name="arrowdown"
+                  size={globalStyle.icon.size + 6}
+                  color={globalStyle.colors.white}
+                />
+              </View>
             </View>
-            <View>
-              <AntDesign
-                name="arrowdown"
-                size={globalStyle.icon.size + 6}
-                color={globalStyle.colors.white}
-              />
-            </View>
-          </View>
-          <View className="mt-3">
-            <Title size="xl" fonts="inter-medium">
-              {margeString([customerInfo?.firstName, customerInfo?.lastName])}
-            </Title>
           </View>
         </View>
 

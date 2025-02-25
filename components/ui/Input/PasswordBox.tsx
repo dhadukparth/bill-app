@@ -40,7 +40,7 @@ const PasswordBox = React.forwardRef<TextInput, PasswordInputBoxProps>(
             secureTextEntry={passwordHide}
             autoComplete="off"
             className={cn(
-              'bg-gray-100 dark:bg-gray-800 max-h-12 py-3 px-4 text-white dark:placeholder:text-gray-300 text-base font-inter-regular font-normal rounded-lg border border-white',
+              'bg-gray-100 dark:bg-gray-800 max-h-12 py-3 px-4 text-black dark:text-white dark:placeholder:text-gray-300 text-base font-inter-regular font-normal rounded-lg border border-white',
               {
                 'pl-12': icon,
               },

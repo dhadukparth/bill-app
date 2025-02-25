@@ -1,16 +1,16 @@
-import RefreshButton from '@/components/ui/Button/RefreshButton';
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
 import InputBox from '@/components/ui/Input/InputBox';
 import Loader from '@/components/ui/Loader';
 import { readCustomers } from '@/lib/filesystem/customer';
 import { useGlobalStore } from '@/store/global';
+import { mergeString } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import React from 'react';
-import { Image, Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Image, Pressable, RefreshControl, View } from 'react-native';
 
 const Customer = () => {
   const getCurrentTheme = useGlobalStore((state) => state.global.theme);
@@ -75,7 +75,6 @@ const Customer = () => {
                   color={globalStyle.colors.white}
                 />
               </Pressable>
-              <RefreshButton onClick={fetchCustomerList} />
             </View>
           </View>
           <View className="mt-4">
@@ -104,43 +103,30 @@ const Customer = () => {
         ) : (
           <View>
             {filterCustomerList?.length ? (
-              <ScrollView className="pb-12">
-                <View>
-                  {filterCustomerList?.map((item: any, index) => (
-                    <Link
-                      key={index}
-                      href={{
-                        pathname: '/edit-customer',
-                        params: item,
+              <FlatList
+                data={filterCustomerList}
+                keyExtractor={(item, index) => index.toString()}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl refreshing={loading} onRefresh={fetchCustomerList} />
+                }
+                renderItem={({ item }) => {
+                  return (
+                    <CustomerCard
+                      imageUrl={item.image}
+                      firstName={item.firstName}
+                      lastName={item.lastName}
+                      email={item.email}
+                      onPress={() => {
+                        router.push({
+                          pathname: '/edit-customer',
+                          params: item,
+                        });
                       }}
-                    >
-                      <View className="flex flex-row  items-center p-4 border-b border-b-gray-200 dark:border-b-gray-800">
-                        <View className="flex flex-row justify-start items-center gap-4">
-                          <View className="size-14 bg-gray-700 border border-white rounded-full">
-                            <Image
-                              source={{
-                                uri:
-                                  item?.image ??
-                                  'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?cs=srgb&dl=pexels-italo-melo-881954-2379004.jpg&fm=jpg',
-                              }}
-                              alt="not found"
-                              className="size-full rounded-full"
-                            />
-                          </View>
-                          <View className="w-11/12">
-                            <Title size="large" fonts="inter-medium">
-                              {item?.firstName + ' ' + item?.lastName}
-                            </Title>
-                            <Title size="small" fonts="poppins-regular">
-                              {item?.email}
-                            </Title>
-                          </View>
-                        </View>
-                      </View>
-                    </Link>
-                  ))}
-                </View>
-              </ScrollView>
+                    />
+                  );
+                }}
+              />
             ) : (
               <View className="flex flex-row justify-center items-center mt-8">
                 <Title size="xl" fonts="poppins-semibold" className="text-gray-400">
@@ -156,3 +142,39 @@ const Customer = () => {
 };
 
 export default React.memo(Customer);
+
+const CustomerCard = (props: {
+  imageUrl: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  onPress?: () => void;
+}) => {
+  return (
+    <Pressable onPress={props.onPress}>
+      <View className="flex flex-row  items-center p-4 border-b border-b-gray-200 dark:border-b-gray-800">
+        <View className="flex flex-row justify-start items-center gap-4">
+          <View className="size-14 bg-gray-700 border border-white rounded-full">
+            <Image
+              source={{
+                uri:
+                  props?.imageUrl ??
+                  'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?cs=srgb&dl=pexels-italo-melo-881954-2379004.jpg&fm=jpg',
+              }}
+              alt="not found"
+              className="size-full rounded-full"
+            />
+          </View>
+          <View className="w-11/12">
+            <Title size="large" fonts="inter-medium">
+              {mergeString([props.firstName, props.lastName])}
+            </Title>
+            <Title size="small" fonts="poppins-regular">
+              {props?.email}
+            </Title>
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
+};

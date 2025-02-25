@@ -32,9 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const handleLoginCheck = async () => {
     const getWelcome = await getData(localstorage_keys.welcome);
     if (getWelcome) {
-      if (user) {
-        router.replace('/(auth)/(tabs)/dashboard');
-      } else {
+      if (!user) {
         router.replace('/');
       }
     } else {

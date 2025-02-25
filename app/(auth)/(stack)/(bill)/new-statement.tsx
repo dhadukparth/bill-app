@@ -4,7 +4,7 @@ import BackWithTitle from '@/components/ui/Button/BackWithTitle';
 import Container from '@/components/ui/Container';
 import { createBill } from '@/lib/filesystem/bills';
 import { GetToday } from '@/lib/moment';
-import { margeString } from '@/utils';
+import { mergeString } from '@/utils';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
@@ -19,7 +19,7 @@ const NewStatementScreen = () => {
       value: '',
     },
     customer: {
-      label: margeString([params?.firstName, params?.lastName]) ?? '',
+      label: mergeString([params?.firstName, params?.lastName]) ?? '',
       value: params?.customerId ?? '',
     },
     activityType: {
@@ -46,10 +46,12 @@ const NewStatementScreen = () => {
     };
 
     const result = await createBill(data);
+
     if (typeof result === 'string') {
+      console.log('===== result ====', result);
       router.push({
         pathname: '/statement-info',
-        params: { customerId: params?.customerId, statementId: result, newBill: 1 },
+        params: { customerId: data?.customerId, statementId: result, newBill: 1 },
       });
       resetForm();
       setLoading(false);

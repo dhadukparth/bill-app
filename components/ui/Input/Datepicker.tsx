@@ -40,7 +40,7 @@ const DatepickerBox: React.FC<DatepickerBoxProps> = ({
         <InputBox icon={icon} value={value} placeholder={placeholder} readOnly />
       </Pressable>
       <ModalBox open={calendarModal} close={handleCloseModal}>
-        <View className="bg-white p-4 rounded-lg w-full">
+        <View className="bg-white p-4 rounded-lg w-full border border-gray-300 dark:border-gray-800">
           <CalendarBox onChange={onChange} selected={value} {...props} />
           <View className="flex flex-row justify-end items-center">
             <Button varient="ghost" onPress={handleCloseModal}>

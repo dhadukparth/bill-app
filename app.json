@@ -16,7 +16,10 @@
         "foregroundImage": "./assets/images/main-logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.quickbillapp.quickbill"
+      "package": "com.quickbillapp.quickbill",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -44,6 +47,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9cacf80d-44b6-4400-9464-2a598cccafdb"
+      }
     }
   }
 }

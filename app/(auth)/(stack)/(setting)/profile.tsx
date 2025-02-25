@@ -2,11 +2,18 @@ import FormikWrapper from '@/components/formik/FormikWrapper';
 import ProfileForm from '@/components/forms/Profile';
 import BackWithTitle from '@/components/ui/Button/BackWithTitle';
 import Container from '@/components/ui/Container';
+import { useGlobalStore } from '@/store/global';
 import { router } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
 const UserProfile = () => {
+  const loginUser = useGlobalStore((state) => state.user);
+
+  if (loginUser === false) {
+    router.push('/');
+  }
+
   return (
     <Container>
       <View className="pt-6">
@@ -15,9 +22,9 @@ const UserProfile = () => {
           <View>
             <FormikWrapper
               initialValues={{
-                firstName: '',
-                lastName: '',
-                email: '',
+                firstName: loginUser && loginUser.firstName,
+                lastName: loginUser && loginUser.lastName,
+                email: loginUser && loginUser.email,
                 description: '',
                 profile: null,
               }}

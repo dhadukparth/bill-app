@@ -9,6 +9,6 @@ export function conditionCheck<T>(condition: boolean, trueResult: T, falseResult
   return condition ? trueResult : falseResult;
 }
 
-export function margeString(values: string[]) {
+export function mergeString(values: string[]) {
   return values.join(' ');
 }

@@ -1,4 +1,5 @@
 import { Title } from '@/components/ui/HeadText';
+import LetterAvater from '@/components/ui/LetterAvater';
 import Loader from '@/components/ui/Loader';
 import { getTransactionPeoples } from '@/lib/filesystem/bills';
 import { useGlobalStore } from '@/store/global';
@@ -98,7 +99,7 @@ export default React.memo(PeopleSection);
 
 const PeopleCard = ({
   onPress,
-  image = 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?cs=srgb&dl=pexels-italo-melo-881954-2379004.jpg&fm=jpg',
+  image,
   firstName,
   lastName,
   icon,
@@ -122,13 +123,13 @@ const PeopleCard = ({
           {icon ? (
             icon
           ) : (
-            <Image
-              source={{
-                uri: image,
-              }}
-              alt="not found"
-              className="size-full rounded-full"
-            />
+            <>
+              {image ? (
+                <Image source={{ uri: image }} alt="not found" className="size-full rounded-full" />
+              ) : (
+                <LetterAvater name={firstName} />
+              )}
+            </>
           )}
         </View>
         <Title className="w-20 line-clamp-1 text-center">{`${firstName} ${lastName}`}</Title>

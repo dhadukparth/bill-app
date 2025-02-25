@@ -63,6 +63,29 @@ export const readBills = async (customerId: string = '', billId: string = '') =>
   }
 };
 
+export const createBillWithCustomer = async () => {
+  try {
+    // Check if the file exists
+    const statement = await readBills();
+    const customerList = await readCustomers();
+
+    const mergeBillCustomer = statement.map((item: any) => {
+      const filterCustomer = customerList?.find(
+        (customer: any) => customer?.id === item?.customerId
+      );
+      return {
+        ...item,
+        customer: filterCustomer,
+      };
+    });
+
+    return mergeBillCustomer; // Return the newly created bill
+  } catch (error) {
+    console.error('Error creating bill:', error);
+    throw error;
+  }
+};
+
 // Function to get all transaction peoples
 export const getTransactionPeoples = async (): Promise<any[]> => {
   try {
@@ -93,14 +116,6 @@ export const getTransactionPeoples = async (): Promise<any[]> => {
 export const createBill = async (newBill: newBillType): Promise<boolean | string> => {
   try {
     const statements = await readBills();
-
-    //     const isDuplicate = customers.some(
-    //       (c: customerDataType) => c.email.toLowerCase() === customer.email.toLowerCase()
-    //     );
-    //     if (isDuplicate) {
-    //       ToastAndroid.show('Customer is already existing!', ToastAndroid.SHORT);
-    //       return false;
-    //     }
 
     const getCurrentUtc = ConvertToUTC(GetToday(), 'UTC');
     const generateId = `${getCurrentUtc}${statements?.length + 1}`;

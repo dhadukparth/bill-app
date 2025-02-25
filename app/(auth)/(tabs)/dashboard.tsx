@@ -1,4 +1,5 @@
 import HistorySection from '@/components/screen/Home/HistorySection';
+import OverviewCard from '@/components/screen/Home/OverviewCard';
 import Container from '@/components/ui/Container';
 import { Title } from '@/components/ui/HeadText';
 import { useGlobalStore } from '@/store/global';
@@ -8,7 +9,7 @@ import Feather from '@expo/vector-icons/Feather';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Link, useFocusEffect } from 'expo-router';
 import React from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, RefreshControl, ScrollView, View } from 'react-native';
 
 type buttonsListType = {
   label: string;
@@ -20,6 +21,7 @@ const HomePage = () => {
   const scrollViewRef = React.useRef<ScrollView>(null);
 
   const getCurrentTheme = useGlobalStore((state) => state.global.theme);
+  const [loading, setLoading] = React.useState(false);
 
   const iconColor = conditionCheck(
     getCurrentTheme === 'dark',
@@ -49,6 +51,17 @@ const HomePage = () => {
       ref={scrollViewRef}
       className="bg-white dark:bg-gray-950"
       showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={() => {
+            setLoading(true);
+            setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          }}
+        />
+      }
     >
       <Container>
         <View className="py-6">
@@ -76,34 +89,7 @@ const HomePage = () => {
           </View>
 
           {/* card */}
-          <View className="my-8 bg-blue-600 py-8 px-6 rounded-3xl">
-            <View className="mb-6">
-              <Title size="xl" fonts="poppins-regular" className="mb-2 text-white">
-                Total Revenue
-              </Title>
-              <Title size="3xl" fonts="inter-bold" className="text-white">
-                ₹ 24,345.00
-              </Title>
-            </View>
-            <View className="flex flex-row justify-between items-center">
-              <View>
-                <Title size="large" fonts="poppins-regular" className="text-white">
-                  This Month
-                </Title>
-                <Title size="xl" fonts="inter-bold" className="text-white">
-                  ₹ 12,800.00
-                </Title>
-              </View>
-              <View>
-                <Title size="large" fonts="poppins-regular" className="text-white">
-                  Last Month
-                </Title>
-                <Title size="xl" fonts="inter-bold" className="text-white">
-                  ₹ 11,545.00
-                </Title>
-              </View>
-            </View>
-          </View>
+          <OverviewCard refresh={loading} />
 
           {/* Action Card */}
           <View>

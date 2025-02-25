@@ -7,7 +7,7 @@ import statementActivityType from '@/constant/statementActivityType';
 import { readBills } from '@/lib/filesystem/bills';
 import { ConvertToUTC } from '@/lib/moment';
 import { useGlobalStore } from '@/store/global';
-import { conditionCheck, margeString } from '@/utils';
+import { conditionCheck, mergeString } from '@/utils';
 import globalStyle from '@/utils/globalStyle';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
@@ -57,18 +57,18 @@ const StatementInformation = () => {
   }
 
   const handleCheckPayment = (statement: any) => {
-    const customerFullName = margeString([
+    const customerFullName = mergeString([
       statementDetails?.customer?.firstName,
       statementDetails?.customer?.firstName,
     ]);
     const loginUserFullName =
-      typeof loginUser === 'object' ? margeString([loginUser?.firstName, loginUser?.lastName]) : '';
+      typeof loginUser === 'object' ? mergeString([loginUser?.firstName, loginUser?.lastName]) : '';
 
     if (statement?.billType === 'credit') return { to: customerFullName, from: loginUserFullName };
     if (statement?.billType === 'debit') return { to: loginUserFullName, from: customerFullName };
   };
 
-  console.log(params);
+  console.log('===== params =======', params);
 
   return (
     <ScrollView className="bg-white dark:bg-gray-950 flex-1">
